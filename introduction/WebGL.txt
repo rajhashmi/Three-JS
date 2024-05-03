@@ -1,0 +1,5 @@
+WebGL is a javascript API
+Render triangle at remarkable speed
+Result can be drawn in a <canvas>
+compatilble with most modern browser 
+Uses The Graphic Processing Unit (GPU)
