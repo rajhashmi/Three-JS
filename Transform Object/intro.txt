@@ -1,0 +1,5 @@
+There are 4 properties to transform objects
+1. prosition
+2. scale
+3. rotation
+4. quaternion
