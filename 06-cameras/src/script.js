@@ -1,5 +1,16 @@
 import * as THREE from 'three'
+import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js'
+console.log(OrbitControls);
 
+const mousePosition = {
+    x:0,
+    y:0
+};
+
+window.addEventListener('mousemove', (event)=>{
+   mousePosition.x = event.clientX / sizes.width - 0.5
+   mousePosition.y = - (event.clientY / sizes.height - 0.5)
+})
 /**
  * Base
  */
@@ -23,12 +34,21 @@ const mesh = new THREE.Mesh(
 scene.add(mesh)
 
 // Camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-camera.position.x = 2
-camera.position.y = 2
-camera.position.z = 2
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height) // lack of perspective
+
+// const camera = new THREE.OrthographicCamera(-1,1,1,-1,0.1, 100)
+/*
+    Parameter Instead o a field of view, we provide how far the camera can see in each direaction (left, right, top and far) then the near and far
+*/
+// camera.position.x = 2
+// camera.position.y = 2
+camera.position.z = 5
 camera.lookAt(mesh.position)
-scene.add(camera)
+scene.add(camera,)
+
+// controls
+
+const controls = new OrbitControls(camera,canvas)
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -44,8 +64,11 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    mesh.rotation.y = elapsedTime;
-
+    // mesh.rotation.y = elapsedTime;
+    // camera.position.x = Math.sin(mousePosition.x * Math.PI * 2) * 3
+    // camera.position.z = Math.cos(mousePosition.x * Math.PI * 2) * 3
+    // camera.position.y = mousePosition.y * 5
+    // camera.lookAt(mesh.position)
     // Render
     renderer.render(scene, camera)
 
