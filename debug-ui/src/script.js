@@ -1,24 +1,52 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import gsap from 'gsap'
+import GUI from 'lil-gui'
 
 /**
  * Base
  */
 // Canvas
+const gui = new GUI({
+    title:"playing tool",
+    closeFolders:true
+})
+
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
 
 /**
- * Object
+ * Object 
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2)
-const material = new THREE.MeshBasicMaterial({ color: '#ff0000' })
+const material = new THREE.MeshBasicMaterial({ color: '#ff0000', wireframe: true })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
+const myCustomObject = {
+    spin: () =>{
+        gsap.to(mesh.rotation, {y:mesh.rotation.y + Math.PI});
+    },
+    subDivision: 2
+}
+
+const cubeTweeks = gui.addFolder('Awesome cube')
+
+cubeTweeks.add(mesh.position, "y").min(-3).max(3).step(0.001).name("elevation")
+cubeTweeks.add(mesh, "visible");
+cubeTweeks.add(material, "wireframe")
+cubeTweeks.addColor(material, "color")
+cubeTweeks.add(myCustomObject,"spin")
+cubeTweeks.add(myCustomObject, "subDivision").min(1).max(20).step(1).onFinishChange((event)=>{
+    // we are updating the geometry  but we are not distorying the previous on this can lead to memory leaks use dispose()
+    mesh.geometry.dispose();
+    mesh.geometry = new THREE.BoxGeometry(1, 1, 1,
+        myCustomObject.subDivision,
+        myCustomObject.subDivision,
+        myCustomObject.subDivision)
+})
 /**
  * Sizes
  */
