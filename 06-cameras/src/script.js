@@ -44,7 +44,7 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height) // la
 // camera.position.y = 2
 camera.position.z = 5
 camera.lookAt(mesh.position)
-scene.add(camera,)
+scene.add(camera)
 
 // controls
 
