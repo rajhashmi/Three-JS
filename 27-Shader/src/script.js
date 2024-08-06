@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+import testVertexShader from './shaders/test/vertex.glsl'
+import testFragmentShader from './shaders/test/fragment.glsl'
 
 /**
  * Base
@@ -20,26 +22,16 @@ const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
 
 /**
- * Test mesh
+ * Test mesh 
  */
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
 
 // Material
 const material = new THREE.RawShaderMaterial({
-    vertexShader: `
-    uniform mat4 projectMatrix;
-    uniform mat4 viewMatrix;
-    uniform mat4 modeMatrix;
-
-
-    attribute vec3 position;
-
-    void main(){
-        gl_Position = projectMatrix * viewMatrix * modeMatrix * vec4(position, 1.0);
-    }
-    `,
-    fragmentShader: ``
+    vertexShader: testVertexShader,
+    fragmentShader:testFragmentShader,
+    side: THREE.DoubleSide
 });
 
 // Mesh
