@@ -4,18 +4,20 @@
 
 
     attribute vec3 position;
+    attribute float aRandom;    
 
+    varying float  vRandom; // this is a way to pass aRandom to fragment and make sure don't give same name change in end of main function
     void main()
     {
         // this is float value mean number should be in decimal
-        float fooBar = - 0.232;
+        /* float fooBar = - 0.232;
         float bar = 1.000;
         float cal = fooBar / bar;
 
         // integer
         int foo = 123;
         int barr = -1;
-
+ 
         //  handeling two data type calculation
         float c = bar * float(foo);
 
@@ -37,10 +39,13 @@
 
     // 
     vec3 foor = vec3(1.0, 2.0, 3.0);
-    vec2 bars = foor.yx;
+    vec2 bars = foor.yx;*/
 
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    modelPosition.z += sin(modelPosition.x * 10.0) * 0.1;
+
+    // modelPosition.z += sin(modelPosition.x * 10.0) * 0.1;
+    modelPosition.z += aRandom * 0.1; 
+
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectionMatrixPosition = projectionMatrix * viewPosition;
 
@@ -50,6 +55,8 @@
         //   gl_Position this variable is already exist we just changing it and this is the position of our shape
 
         //  gl_Position.x += 0.5 // changing the position of mesh and this is not good way.
+
+        vRandom = aRandom;
     }
 
 

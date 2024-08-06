@@ -26,7 +26,17 @@ const textureLoader = new THREE.TextureLoader();
  */
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+console.log(geometry)
+const count = geometry.attributes.position.count;
+const random = new Float32Array(count);
 
+for(let i = 0; i < count; i++){
+    random[i] = Math.random();
+}
+
+geometry.setAttribute('aRandom', new THREE.BufferAttribute(random, 1));
+
+console.log(random)
 // Material
 const material = new THREE.RawShaderMaterial({
     vertexShader: testVertexShader,
