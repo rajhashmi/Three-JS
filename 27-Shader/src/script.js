@@ -20,6 +20,7 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+const flagTexture = textureLoader.load('/textures/flag-french.jpg')
 
 /**
  * Test mesh 
@@ -41,11 +42,18 @@ console.log(random)
 const material = new THREE.RawShaderMaterial({
     vertexShader: testVertexShader,
     fragmentShader:testFragmentShader,
+    uniforms: {
+        uFrequency: {value : new THREE.Vector2(10, 5)},  // replace 🟢 (check in glsl file)
+        uTime: {value: 0}, // this will help to make animation to shape update this in tick function
+        uColor: {value: new THREE.Color('cyan')},
+        uTexture: {value: flagTexture}
+    },
     side: THREE.DoubleSide
 });
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
+mesh.scale.y = 2 / 3;
 scene.add(mesh)
 
 /**
@@ -101,6 +109,8 @@ const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
 
+
+    material.uniforms.uTime.value = elapsedTime
     // Update controls
     controls.update()
 
@@ -121,3 +131,4 @@ We will start with the RawShaderMaterial to better understand what's happening.
 
 The starter contains a simple plane with a MeshBasicMaterial on it.
  * **/ 
+

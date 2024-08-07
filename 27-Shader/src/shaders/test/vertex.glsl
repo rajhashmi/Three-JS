@@ -1,12 +1,16 @@
     uniform mat4 projectionMatrix;
     uniform mat4 viewMatrix;
     uniform mat4 modelMatrix;
-
+    uniform vec2 uFrequency;
+    uniform float uTime;
 
     attribute vec3 position;
-    attribute float aRandom;    
+    attribute float aRandom;  
+    attribute vec2 uv;
 
-    varying float  vRandom; // this is a way to pass aRandom to fragment and make sure don't give same name change in end of main function
+    varying vec2 vUv;
+
+
     void main()
     {
         // this is float value mean number should be in decimal
@@ -43,8 +47,9 @@
 
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
-    // modelPosition.z += sin(modelPosition.x * 10.0) * 0.1;
-    modelPosition.z += aRandom * 0.1; 
+    modelPosition.z += sin(modelPosition.x * uFrequency.x - uTime) * 0.1; //  that 10 we are multiplying with  🟢
+    modelPosition.z += sin(modelPosition.y * uFrequency.y - uTime) * 0.1;
+    // modelPosition.z += aRandom * 0.1; 
 
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectionMatrixPosition = projectionMatrix * viewPosition;
@@ -55,8 +60,7 @@
         //   gl_Position this variable is already exist we just changing it and this is the position of our shape
 
         //  gl_Position.x += 0.5 // changing the position of mesh and this is not good way.
-
-        vRandom = aRandom;
+        vUv = uv;
     }
 
 
