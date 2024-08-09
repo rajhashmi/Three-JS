@@ -21,6 +21,13 @@ const scene = new THREE.Scene()
  */
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
+const uvAttribute = geometry.attributes.uv;
+
+for (let i = 0; i < uvAttribute.count; i++) {
+    const u = uvAttribute.getX(i);
+    const v = uvAttribute.getY(i);
+    console.log(`UV ${i}: u = ${u}, v = ${v}`);
+}
 
 // Material
 const material = new THREE.ShaderMaterial({
@@ -31,6 +38,7 @@ const material = new THREE.ShaderMaterial({
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
+
 scene.add(mesh)
 
 /**
@@ -93,3 +101,7 @@ const tick = () =>
 }
 
 tick()
+
+
+
+
