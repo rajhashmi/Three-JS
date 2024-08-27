@@ -2,6 +2,9 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import GUI from 'lil-gui'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import coffeeSmokeVertexShader from './shaders/coffeeSmoke/vertex.glsl'
+import coffeeSmokeFragmentShader from './shaders/coffeeSmoke/fragment.glsl'
+
 
 /**
  * Base
@@ -19,7 +22,39 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 const gltfLoader = new GLTFLoader()
 
-/**
+
+/***
+ * Smoke
+ * */ 
+
+const smokeGeometry = new THREE.PlaneGeometry(1,1,16,64);
+smokeGeometry.translate(0,0.5,0);
+smokeGeometry.scale(1.5,5,1.5);
+
+// Perlin texture
+const perlinTexture = textureLoader.load('./perlin.png');
+
+// after sometime the texture is reapeting the bottom of the texture to avoid this using 
+perlinTexture.wrapS =  THREE.RepeatWrapping
+perlinTexture.wrapT =  THREE.RepeatWrapping
+
+const smokeMaterial = new THREE.ShaderMaterial({
+    fragmentShader: coffeeSmokeFragmentShader,
+    vertexShader:coffeeSmokeVertexShader,
+    side: THREE.DoubleSide,
+    transparent: true,
+    depthWrite: false,
+    uniforms: {
+        uTime: new THREE.Uniform(0),
+        uPerlinTexture : new THREE.Uniform(perlinTexture)
+    },
+})  
+
+const smoke = new THREE.Mesh(smokeGeometry,smokeMaterial);
+smoke.position.y = 1.83;
+scene.add(smoke)
+
+/** 
  * Sizes
  */
 const sizes = {
@@ -87,6 +122,8 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    smokeMaterial.uniforms.uTime.value = elapsedTime;
 
     // Update controls
     controls.update()
