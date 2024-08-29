@@ -84,20 +84,20 @@ gltfLoader.load(
         }
 )
 
-// gltfLoader.load(
-//     '/models/FlightHelmet/glTF/FlightHelmet.gltf',
-//     (gltf) =>
-//         {
-//             // const copyChildren = [...gltf.scene.children];
-//             // for(const child of copyChildren){
-//             //     scene.add(child)
-//             // }
+gltfLoader.load(
+    '/models/untitled.glb',
+    (gltf) =>
+        {
+            // const copyChildren = [...gltf.scene.children];
+            // for(const child of copyChildren){
+            //     scene.add(child)
+            // }
 
-//             //  we can add scene as well 
-
-//             scene.add(gltf.scene)
-//         }
-// )
+            //  we can add scene as well 
+            gltf.scene.position.y  =2 
+            scene.add(gltf.scene)
+        }
+)
 
 
 // DRACOLoader

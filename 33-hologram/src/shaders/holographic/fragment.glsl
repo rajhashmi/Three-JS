@@ -1,5 +1,7 @@
 varying vec3 vPosition;
 uniform float uTime;
+varying vec3 vNormal;
+
 
 void main(){
 
@@ -7,7 +9,7 @@ void main(){
     strips = pow(strips, 3.0);
 
 
-    gl_FragColor = vec4(1.0, 1.0, 1.0, strips );
+    gl_FragColor = vec4(vNormal, 1.0  );
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
 } 
