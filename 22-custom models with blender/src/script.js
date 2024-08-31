@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { FBXLoader } from 'three/examples/jsm/Addons.js'
 import GUI from 'lil-gui'
 
 /**
@@ -27,11 +28,21 @@ gltfLoader.setDRACOLoader(dracoLoader)
 
 let mixer = null
 
+const fbxLoader = new FBXLoader();
+fbxLoader.load(
+    `practiced1.fbx`,
+    (c) => {
+        c.scale.set(0.025,0.025,0.025)
+        scene.add(c)
+    }
+)
+
 gltfLoader.load(
-    '/models/hamburger.glb',
+    'raj.gltf',
     (gltf) =>
     {
-        scene.add(gltf.scene)
+       
+        
     }
 )
 
@@ -48,7 +59,7 @@ const floor = new THREE.Mesh(
 )
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+// scene.add(floor) 
 
 /**
  * Lights
@@ -89,6 +100,12 @@ window.addEventListener('resize', () =>
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
+
+const light = new THREE.DirectionalLight(
+    new THREE.Color("white"),
+    10
+);
+scene.add(light)
 
 /**
  * Camera
