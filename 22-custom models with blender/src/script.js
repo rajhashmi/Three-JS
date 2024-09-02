@@ -30,7 +30,7 @@ let mixer = null
 
 const fbxLoader = new FBXLoader();
 fbxLoader.load(
-    `practiced1.fbx`,
+    `practiced2.fbx`,
     (c) => {
         c.scale.set(0.025,0.025,0.025)
         scene.add(c)
@@ -101,11 +101,7 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
-const light = new THREE.DirectionalLight(
-    new THREE.Color("white"),
-    10
-);
-scene.add(light)
+ 
 
 /**
  * Camera
