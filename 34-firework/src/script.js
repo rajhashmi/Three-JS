@@ -175,7 +175,7 @@ const createRandomFirework = () =>
     }
 
 window.addEventListener("click", createRandomFirework)
-createRandomFirework()
+createRandomFirework();
 
 
 /**
