@@ -7,18 +7,27 @@ import gsap from 'gsap';
  * Loaders
  */
 
-const webLoader = new THREE.LoadingManager(
+const loaderElement = document.querySelector(".loading-bar");
 
+const webLoader = new THREE.LoadingManager(
+ 
     () => {
         // on loaded 
-        gsap.to(materail.uniforms.uAlha, {duration: 3, value: 0});
-        console.log("loaded");
+
+        setTimeout(()=>{
+                gsap.to(materail.uniforms.uAlha, {duration: 3, value: 0});
+                loaderElement.classList.add('ended')
+                loaderElement.style.transform = ''
+        },800)
+      
         
 
 
     }, 
-    () => {
+    (URL, loaded, itemTotal) => {
         // on propress this will help us to fill the bar of loader
+        const progressRatio = loaded / itemTotal
+        loaderElement.style.transform = `scaleX(${progressRatio})`
         console.log("progress")
     }
 
