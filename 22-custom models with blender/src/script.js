@@ -24,28 +24,15 @@ const dracoLoader = new DRACOLoader()
 dracoLoader.setDecoderPath('/draco/')
 
 const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(dracoLoader)
-
-let mixer = null
-
-const fbxLoader = new FBXLoader();
-fbxLoader.load(
-    `practiced2.fbx`,
-    (c) => {
-        c.scale.set(0.025,0.025,0.025)
-        scene.add(c)
-    }
-)
+// gltfLoader.setDRACOLoader(dracoLoader)   
 
 gltfLoader.load(
-    'raj.gltf',
-    (gltf) =>
-    {
-       
+    `one.glb`,
+    (gltf)=>{
+        scene.add(gltf.scene)
         
     }
 )
-
 /**
  * Floor
  */
@@ -139,10 +126,7 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
-    if(mixer)
-    {
-        mixer.update(deltaTime)
-    }
+   
 
     // Update controls
     controls.update()
