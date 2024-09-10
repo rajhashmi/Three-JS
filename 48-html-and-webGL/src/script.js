@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 /**
  * Loaders
  */
+let sceneReady = false
 const loadingBarElement = document.querySelector('.loading-bar')
 const loadingManager = new THREE.LoadingManager(
     // Loaded
@@ -21,6 +22,10 @@ const loadingManager = new THREE.LoadingManager(
             loadingBarElement.classList.add('ended')
             loadingBarElement.style.transform = ''
         }, 500)
+        window.setTimeout(() =>
+            {
+                sceneReady = true
+            }, 2000)
     },
 
     // Progress
@@ -127,6 +132,20 @@ gltfLoader.load(
     }
 )
 
+
+/***
+ * Point of interest
+ * */ 
+
+const raycaster = new THREE.Raycaster()
+
+const points = [
+    {
+        position: new THREE.Vector3(1.55, 0.3, - 0.6),
+        element: document.querySelector('.point-0')
+    }
+]
+
 /**
  * Lights
  */
@@ -194,6 +213,44 @@ const tick = () =>
 {
     // Update controls
     controls.update()
+
+    if(sceneReady){
+        for(const point of points)
+    {
+        const screenPosition = point.position.clone()
+        screenPosition.project(camera)
+
+        raycaster.setFromCamera(screenPosition, camera)
+        const intersects = raycaster.intersectObjects(scene.children, true)
+
+        if(intersects.length === 0)
+            {
+                point.element.classList.add('visible')
+            }
+            else
+            {
+                const intersectionDistance = intersects[0].distance
+                const pointDistance = point.position.distanceTo(camera.position)
+    
+                if(intersectionDistance < pointDistance)
+                {
+                    point.element.classList.remove('visible')
+                }
+                else
+                {
+                    point.element.classList.add('visible')
+                }
+            }
+
+        const translateX = screenPosition.x * sizes.width * 0.5
+        const translateY = - screenPosition.y * sizes.height * 0.5
+        point.element.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`
+    }
+    }
+
+
+
+
 
     // Render
     renderer.render(scene, camera)
