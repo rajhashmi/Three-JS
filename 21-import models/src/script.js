@@ -30,7 +30,7 @@ const floor = new THREE.Mesh(
 )
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+// scene.add(floor)
 
 /**
  * Models
@@ -56,7 +56,7 @@ gltfLoader.load(
             const model = gltf.scene;
             // model.scale.set(0.025, 0.025, 0.025); // Adjust the scale factors to make the model smaller
             model.position.x = 3
-            scene.add(model);
+            // scene.add(model);
 
 
             // mixer = new THREE.AnimationMixer(gltf.scene) // pasing object what we want to aniamtion and keep in mind that in tis object there is a propertty name animate where we'll find the animation
@@ -83,18 +83,29 @@ gltfLoader.load(
         
         }
 )
+const textureLoader = new THREE.TextureLoader()
+const texture = textureLoader.load( 'lastTexture.png');
+texture.flipY = false
+const bakedMaterial = new THREE.MeshBasicMaterial({ map: texture })
+texture.colorSpace = THREE.SRGBColorSpace
 
 gltfLoader.load(
-    '/models/untitled.glb',
+    'survivalGame.glb',
     (gltf) =>
         {
             // const copyChildren = [...gltf.scene.children];
             // for(const child of copyChildren){
             //     scene.add(child)
             // }
-
+            gltf.scene.traverse((child) =>
+                {
+                    console.log(child);
+                    
+                    child.material = bakedMaterial
+                })
+            
             //  we can add scene as well 
-            gltf.scene.position.y  =2 
+            // gltf.scene.position.y  =2 
             scene.add(gltf.scene)
         }
 )
@@ -121,7 +132,7 @@ gltfLoader.load(
  * Lights
  */
 const ambientLight = new THREE.AmbientLight(0xffffff, 2.4)
-scene.add(ambientLight)
+// scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8)
 directionalLight.castShadow = true
@@ -132,7 +143,7 @@ directionalLight.shadow.camera.top = 7
 directionalLight.shadow.camera.right = 7
 directionalLight.shadow.camera.bottom = - 7
 directionalLight.position.set(5, 5, 5)
-scene.add(directionalLight)
+// scene.add(directionalLight)
 
 /**
  * Sizes
