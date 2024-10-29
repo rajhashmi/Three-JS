@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import GUI from 'lil-gui'
 import { mix, threshold } from 'three/examples/jsm/nodes/Nodes.js'
@@ -55,9 +56,7 @@ gltfLoader.load(
             console.log(gltf);
             const model = gltf.scene;
             // model.scale.set(0.025, 0.025, 0.025); // Adjust the scale factors to make the model smaller
-            model.position.x = 3
             // scene.add(model);
-
 
             // mixer = new THREE.AnimationMixer(gltf.scene) // pasing object what we want to aniamtion and keep in mind that in tis object there is a propertty name animate where we'll find the animation
 
@@ -88,27 +87,20 @@ const texture = textureLoader.load( 'lastTexture.png');
 texture.flipY = false
 const bakedMaterial = new THREE.MeshBasicMaterial({ map: texture })
 texture.colorSpace = THREE.SRGBColorSpace
+const loader = new FBXLoader();
+loader.load(
+  'city1.fbx',
+  (object) => {
+    // Traverse the model to inspect or modify its children
+   
+    console.log(object)
+   
 
-gltfLoader.load(
-    'survivalGame.glb',
-    (gltf) =>
-        {
-            // const copyChildren = [...gltf.scene.children];
-            // for(const child of copyChildren){
-            //     scene.add(child)
-            // }
-            gltf.scene.traverse((child) =>
-                {
-                    console.log(child);
-                    
-                    child.material = bakedMaterial
-                })
-            
-            //  we can add scene as well 
-            // gltf.scene.position.y  =2 
-            scene.add(gltf.scene)
-        }
-)
+    // Add the entire object to the scene
+    scene.add(object.scale.set(2,2,2));
+  }
+);
+
 
 
 // DRACOLoader
@@ -165,7 +157,7 @@ window.addEventListener('resize', () =>
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)) 
 })
 
 /**
